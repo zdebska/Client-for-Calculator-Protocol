@@ -80,11 +80,22 @@ Implementing a client looked like:
 - In order for the user to be able to finish the program on his own, he need ro press `"Ctrl+C"`. Therefore, program also handles this keyboard shortcut and ending the program correctly.
 
 ## Tests
+Tests were written in python. They check basic functionality of the program. 
+Tester connects to the server, send input and receive expected output which compare with output from client program.  
+Tester also can check for timeout. For it exist additional argument in functions.  
+Here is screenshot for `tcp` mode:  
+![Here is screenshot for `tcp` mode:](image/tcptest.jpg)
+
+Here is screenshot for `udp` mode:  
+![Here is screenshot for `udp` mode:](image/udptest.jpg)
+
+Fixed error:
+![Fixed error:](image/failedtest.jpg)
+
 To run tests use following command:  
 ```
-python3 ./tests.py -h <host> -p <port> -m <mode>
+python3 ./test.py -h <host> -p <port> -m <mode>
 ```
-
 
 ## License
 The program was made according to GNU General Public Licence v3.0.

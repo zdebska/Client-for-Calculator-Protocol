@@ -71,6 +71,10 @@ def test(host=HOST, port=PORT, mode=MODE):
 
             input, expect = testingFunc()
 
+            if MODE == 'tcp':
+                expect = "You are connected to the server.\n" + \
+                    expect + "You are disconnected from the server.\n"
+
             try:
 
                 # Write the input to stdin
@@ -78,8 +82,8 @@ def test(host=HOST, port=PORT, mode=MODE):
 
                 # Read the output from stdout
                 output,err = PROCESS.communicate()
-                output = output.decode(
-                    'utf-8') if output == b'' else err.decode('utf-8')
+                output = output.decode('utf-8') 
+
 
                 PROCESS.terminate()
             except subprocess.TimeoutExpired:
@@ -122,7 +126,22 @@ def easy_test_tcp():
 
     return INPUT, EXPECT
 
-@test(host="1.1.1.1")
+
+@test()
+def multiple_test_tcp():
+    EXPECT = "HELLO\nRESULT 6\nRESULT 6/23\nRESULT -136\nBYE\n"
+    INPUT = "HELLO\nSOLVE (+ 2 (* 2 2))\nSOLVE (/ 12 (* 23 2))\nSOLVE (- 26 (* 54 3))\nBYE\n"
+
+    return INPUT, EXPECT
+
+@test()
+def hard_test_tcp():
+    EXPECT = "HELLO\nRESULT 55/2\nBYE\n"
+    INPUT = "HELLO\nSOLVE (+ 2 (* 34 (/ 3 4)))\nBYE\n"
+
+    return INPUT, EXPECT
+
+@test()
 def easy_test_udp():
     EXPECT = "OK:4\n"
     INPUT = "(+ 2 2)\n"
@@ -130,8 +149,32 @@ def easy_test_udp():
     return INPUT, EXPECT
 
 
-easy_test_udp()
+@test()
+def multiple_test_udp():
+    EXPECT = "OK:6\nOK:6/23\nOK:-136\n"
+    INPUT = "(+ 2 (* 2 2))\n(/ 12 (* 23 2))\n(- 26 (* 54 3))\n"
 
-# easy_test_tcp()
+    return INPUT, EXPECT
+
+
+@test()
+def hard_test_udp():
+    EXPECT = "OK:55/2\n"
+    INPUT = "(+ 2 (* 34 (/ 3 4)))\n"
+
+    return INPUT, EXPECT
+
+
+
+if MODE == 'tcp':
+    easy_test_tcp()
+    multiple_test_tcp()
+    hard_test_tcp()
+else:
+    easy_test_udp()
+    multiple_test_udp()
+    hard_test_udp()
+
+
 
     

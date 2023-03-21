@@ -1,6 +1,6 @@
 Initial version 0.0.0 - 2023-03-20 [f819ce8] 
 - Added Licence
-- Added Readme
+- Added README
 
 Version 1.0.0 - 2023-03-20 [7ecba7f]  
 - Argument parsing done  
@@ -29,3 +29,10 @@ Version 1.2.0 - 2023-03-21 [e20b0c0]
 Version 1.3.0 - 2023-03-21 [4cd913f]
 - Added check for returning operation code for UDP
 - Fixed Makefile
+
+Version 1.4.0 - 2023-03-21 [4e00f08]
+- Added CHANGELOG
+- Written README
+- added --help option
+- added tests
+- Added output for UDP based on operation code
