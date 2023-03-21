@@ -7,8 +7,7 @@
  *  @copyright GNU GENERAL PUBLIC LICENSE v3.0
  */
 
-/* -- Includes -- */
-
+/* Includes */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -99,8 +98,8 @@ void message_to_binary(char* message, char* binary_message, int* bin_msg_len){
  * @param reseived_message decoded message
  * @param status_code request status
  */
-void binary_to_message(char* buffer, char* reseived_message, char* status_code){
-    //int opcode = buffer[0];
+void binary_to_message(char* buffer, char* reseived_message, char* status_code, char* opcode){
+    *opcode = buffer[0];
     *status_code = buffer[1];
     int message_size = buffer[2];
 
@@ -116,6 +115,12 @@ int main(int argc, char *argv[]) {
     char *host = NULL;
     char *port = NULL;
     char *mode = NULL;
+
+    // Check if the help option is specified
+    if (argc == 2 && strcmp(argv[1], "--help") == 0) {
+        printf("Usage: %s -h <host> -p <port> -m <mode>\nFor help print: %s --help\n", argv[0], argv[0]);
+        return 0;
+    }
 
     // Parse command-line options
     int opt;
@@ -143,10 +148,12 @@ int main(int argc, char *argv[]) {
                 mode = optarg;
                 break;
             default:
-                fprintf(stderr, "Usage: %s -h <host> -p <port> -m <mode>\n", argv[0]);
+                fprintf(stderr, "Usage: %s -h <host> -p <port> -m <mode>\nFor help print: %s --help\n", argv[0], argv[0]);
                 exit(EXIT_FAILURE);
         }
     }
+    
+
 
     // Check for system compatybility 
     if (strcmp("Windows", OS) == 0 ||  strcmp("Unknown", OS) == 0){
@@ -278,13 +285,20 @@ int main(int argc, char *argv[]) {
             // Decode message
             char reseived_message[BUFFER_SIZE] = {'\0'};
             char status_code;
-            binary_to_message(buffer, reseived_message, &status_code);
+            char opcode;
+            binary_to_message(buffer, reseived_message, &status_code, &opcode);
 
             // Print message according to the status
             switch((int)status_code){
                 case 0:
-                    printf("OK:%s\n", reseived_message);
-                    break;
+                    if((int)opcode == 1){
+                        printf("OK:%s\n", reseived_message);
+                        break;
+                    }
+                    else{
+                        printf("ERR:%s\n", reseived_message);
+                        break;
+                    }
                 case 1:
                     printf("ERR:%s\n", reseived_message);
                     break;
