@@ -100,7 +100,7 @@ void message_to_binary(char* message, char* binary_message, int* bin_msg_len){
  * @param status_code request status
  */
 void binary_to_message(char* buffer, char* reseived_message, char* status_code){
-    int opcode = buffer[0];
+    //int opcode = buffer[0];
     *status_code = buffer[1];
     int message_size = buffer[2];
 
@@ -169,7 +169,7 @@ int main(int argc, char *argv[]) {
     
     // Program works different depending on mode
     // TCP mode
-    if (strcmp("tcp", mode)){ 
+    if (strcmp("tcp", mode) == 0){ 
         // Create socket
         if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
             fprintf(stderr, "Error creating socket");

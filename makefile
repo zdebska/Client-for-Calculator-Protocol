@@ -2,26 +2,15 @@ CC = gcc
 CFLAGS = -Wall -Wextra -Werror -std=c99
 LDFLAGS =
 
-ifeq ($(OS),Windows_NT)
-	# Windows settings
-	EXECUTABLE = ipkcpc.exe
-else
-	# Linux settings
-	EXECUTABLE = ipkcpc
-endif
+TARGET = ipkcpc
 
-SRC = ipkcpc.c
-OBJ = $(SRC:.c=.o)
+all: $(TARGET)
 
-.PHONY: all clean
+$(TARGET): ipkcpc.c
+	$(CC) $(CFLAGS) ipkcpc.c -o $(TARGET)
 
-all: $(EXECUTABLE)
-
-$(EXECUTABLE): $(OBJ)
-	$(CC) $(LDFLAGS) -o $@ $^
-
-%.o: %.c
-	$(CC) $(CFLAGS) -c -o $@ $<
+run:
+	./$(TARGET) -h <host> -p <port> -m <mode>
 
 clean:
-	rm -f $(EXECUTABLE) $(OBJ)
+	rm -f $(TARGET)
